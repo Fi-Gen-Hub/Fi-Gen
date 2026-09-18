@@ -120,7 +120,7 @@ const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
 if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Simple validation
@@ -128,6 +128,7 @@ if (contactForm) {
     let valid = true;
     required.forEach(el => {
       el.style.borderColor = '';
+      el.style.boxShadow = '';
       if (!el.value.trim()) {
         el.style.borderColor = '#ef4444';
         el.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
@@ -136,15 +137,31 @@ if (contactForm) {
     });
     if (!valid) return;
 
-    // Simulate submit
+    // Show sending state
     const btn = contactForm.querySelector('button[type="submit"]');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
 
-    setTimeout(() => {
-      contactForm.style.display = 'none';
-      formSuccess.classList.add('visible');
-    }, 1500);
+    try {
+      const formData = new FormData(contactForm);
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        contactForm.style.display = 'none';
+        formSuccess.classList.add('visible');
+      } else {
+        throw new Error('Server error: ' + response.status);
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Enquiry';
+      btn.disabled = false;
+      alert('Sorry, something went wrong. Please email us directly at support@fi-gen.com');
+    }
   });
 
   // Clear error styling on input
