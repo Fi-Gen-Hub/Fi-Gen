@@ -372,7 +372,7 @@
     .social-link { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-base); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-main); transition: all var(--transition-fast); }
     .social-link:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-3px); }
     
-    .contact-form-wrap { background: var(--bg-base); padding: 3rem; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--card-shadow); position: relative; }
+    .contact-form-wrap { background: var(--bg-base); padding: 3rem; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--card-shadow); position: relative; overflow: hidden; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     .form-group { margin-bottom: 1.5rem; }
     .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-main); }
@@ -380,7 +380,7 @@
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
     .form-note { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 1rem; }
     
-    .form-success { position: absolute; inset: 0; background: var(--bg-base); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; opacity: 0; visibility: hidden; transition: all var(--transition-normal); z-index: 10; }
+    .form-success { position: absolute; inset: 0; background: var(--bg-base); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; opacity: 0; visibility: hidden; transition: all var(--transition-normal); z-index: 10; }
     .form-success.show { opacity: 1; visibility: visible; }
     .success-icon { font-size: 4rem; color: #10b981; margin-bottom: 1.5rem; }
     
@@ -953,7 +953,7 @@
         </div>
         <div class="contact-form-wrap reveal-right">
           
-          <form class="contact-form" action="https://formsubmit.co/support@fi-gen.com" method="POST">
+          <form class="contact-form" id="contactForm" action="https://formsubmit.co/support@fi-gen.com" method="POST">
             <!-- FormSubmit Options -->
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_subject" value="New Fi-Gen Logistics Enquiry!">
@@ -1010,6 +1010,13 @@
             </button>
             <div class="form-note"><i class="fas fa-lock"></i> Your information is secure and will never be shared.</div>
           </form>
+
+          <!-- Beautiful Success Overlay -->
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h3>Enquiry Sent!</h3>
+            <p>Thank you. Our logistics team will contact you within 2 business hours.</p>
+          </div>
 
         </div>
       </div>
@@ -1200,7 +1207,64 @@
 
       counters.forEach(counter => counterObserver.observe(counter));
 
-      // 8. Set Current Year in Footer
+      // 8. Contact Form Handling - ADVANCED AJAX TO BYPASS FORMSUBMIT ERRORS
+      const contactForm = document.getElementById('contactForm');
+      const formSuccess = document.getElementById('formSuccess');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault(); // Stop standard broken redirect
+          
+          if (contactForm.checkValidity()) {
+            // Give user feedback that it's sending
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(contactForm);
+
+            // Send silent JSON request to FormSubmit to bypass their broken 500 error page
+            fetch(contactForm.action, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json' 
+              },
+              body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success || data.success === "true") {
+                // Show custom green success UI
+                formSuccess.classList.add('show');
+                contactForm.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                  formSuccess.classList.remove('show');
+                }, 5000);
+              } else {
+                alert("Please check your email (support@fi-gen.com) to activate FormSubmit first.");
+              }
+            })
+            .catch(error => {
+              alert("FormSubmit servers are currently down. Please try again later.");
+              console.error('Submission Error:', error);
+            })
+            .finally(() => {
+              // Reset button
+              submitBtn.innerHTML = originalBtnText;
+              submitBtn.style.opacity = '1';
+              submitBtn.disabled = false;
+            });
+          } else {
+            contactForm.reportValidity();
+          }
+        });
+      }
+
+      // 9. Set Current Year in Footer
       document.getElementById('year').textContent = new Date().getFullYear();
     });
   </script>
