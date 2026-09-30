@@ -903,7 +903,7 @@
     </div>
   </section>
 
-  <section id="contact" class="section contact-section">
+<section id="contact" class="section contact-section">
     <div class="container">
       <div class="section-header reveal-up">
         <div class="section-tag">Get In Touch</div>
@@ -952,7 +952,11 @@
           </div>
         </div>
         <div class="contact-form-wrap reveal-right">
-          <form class="contact-form" id="contactForm" novalidate>
+          <form class="contact-form" action="https://formsubmit.co/support@fi-gen.com" method="POST">
+            <!-- FormSubmit Options -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="New Fi-Gen Logistics Enquiry!">
+            
             <div class="form-row">
               <div class="form-group">
                 <label for="firstName">First Name *</label>
@@ -1005,11 +1009,6 @@
             </button>
             <div class="form-note"><i class="fas fa-lock"></i> Your information is secure and will never be shared.</div>
           </form>
-          <div class="form-success" id="formSuccess">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h3>Enquiry Sent!</h3>
-            <p>Thank you. Our logistics team will contact you within 2 business hours.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -1199,30 +1198,7 @@
 
       counters.forEach(counter => counterObserver.observe(counter));
 
-      // 8. Contact Form Handling
-      const contactForm = document.getElementById('contactForm');
-      const formSuccess = document.getElementById('formSuccess');
-
-      if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          // Simulate form processing without external navigation
-          const isValid = contactForm.checkValidity();
-          if (isValid) {
-            formSuccess.classList.add('show');
-            contactForm.reset();
-            
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-              formSuccess.classList.remove('show');
-            }, 5000);
-          } else {
-            contactForm.reportValidity();
-          }
-        });
-      }
-
-      // 9. Set Current Year in Footer
+      // 8. Set Current Year in Footer
       document.getElementById('year').textContent = new Date().getFullYear();
     });
   </script>
