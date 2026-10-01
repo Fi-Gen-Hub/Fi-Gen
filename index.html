@@ -150,15 +150,13 @@
     }
     .preloader-inner { text-align: center; }
     .preloader-logo { font-size: 2rem; font-family: var(--font-heading); font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
-    /* Preloader Logo Transparency Fix */
-    .preloader-logo img { 
-        height: 80px; width: auto; object-fit: contain; 
-        mix-blend-mode: multiply; /* Removes white background in light mode */
-    }
-    /* If dark theme, invert the colors so the black text turns white, and background remains transparent */
-    :root[data-theme="dark"] .preloader-logo img {
-        filter: invert(1) brightness(2);
-        mix-blend-mode: screen; /* Removes black background after invert */
+    /* Preloader Logo — logo.png now has a native transparent background,
+       so blend-mode / invert workarounds are no longer needed. Size increased. */
+    .preloader-logo img {
+        height: 120px; width: auto; object-fit: contain;
+        background: transparent;
+        mix-blend-mode: normal;
+        filter: none;
     }
 
     .preloader-bar { width: 200px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 0 auto; }
@@ -181,12 +179,20 @@
     
     .nav-logo { display: flex; align-items: center; text-decoration: none; }
     
-    /* Logo Background Transparency Fix (No white box) */
-    .nav-logo img, .footer-brand .nav-logo img { 
-        height: 48px; width: auto; object-fit: contain; 
-        padding: 4px; /* Reduced padding since box is gone */
-        /* For Light Mode: Multiply removes the white background */
-        mix-blend-mode: multiply; 
+    /* Logo Transparency Fix — logo.png now has a native transparent background,
+       so blend-mode / invert workarounds are removed and the size is increased. */
+    .nav-logo img {
+        height: 72px; width: auto; object-fit: contain;
+        background: transparent;
+        mix-blend-mode: normal;
+        filter: none;
+        padding: 0;
+    }
+    .footer-brand .nav-logo img {
+        height: 96px; width: auto; object-fit: contain;
+        background: transparent;
+        mix-blend-mode: normal;
+        filter: none;
     }
     .footer-brand .nav-logo img { height: 60px; }
     
@@ -564,6 +570,7 @@
         <span class="marquee-item"><i class="fas fa-train"></i> Rail Freight</span>
         <span class="marquee-item"><i class="fas fa-file-contract"></i> Trade Documentation</span>
         <span class="marquee-item"><i class="fas fa-shield-alt"></i> Cargo Insurance</span>
+        <span class="marquee-item"><i class="fas fa-shopping-cart"></i> E-commerce Logistics (Amazon &amp; Shopify)</span>
         <span class="marquee-item"><i class="fas fa-plane"></i> Air Freight</span>
         <span class="marquee-item"><i class="fas fa-ship"></i> Sea Freight</span>
         <span class="marquee-item"><i class="fas fa-truck"></i> Road Freight</span>
@@ -572,6 +579,7 @@
         <span class="marquee-item"><i class="fas fa-train"></i> Rail Freight</span>
         <span class="marquee-item"><i class="fas fa-file-contract"></i> Trade Documentation</span>
         <span class="marquee-item"><i class="fas fa-shield-alt"></i> Cargo Insurance</span>
+        <span class="marquee-item"><i class="fas fa-shopping-cart"></i> E-commerce Logistics (Amazon &amp; Shopify)</span>
       </div>
     </div>
   </div>
@@ -593,7 +601,7 @@
             <li><i class="fas fa-check"></i> Real-time tracking</li>
             <li><i class="fas fa-check"></i> Dangerous goods handling</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/air-freight.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="service-card reveal-up" style="transition-delay: 100ms">
           <div class="service-icon-wrap"><div class="service-icon"><i class="fas fa-ship"></i></div></div>
@@ -604,7 +612,7 @@
             <li><i class="fas fa-check"></i> Port-to-port / door-to-door</li>
             <li><i class="fas fa-check"></i> Reefer &amp; OOG cargo</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/sea-freight.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="service-card reveal-up card-featured" style="transition-delay: 200ms">
           <div class="featured-badge">Core Service</div>
@@ -617,7 +625,7 @@
             <li><i class="fas fa-check"></i> Duty &amp; tariff advisory</li>
             <li><i class="fas fa-check"></i> DGFT compliance</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/customs-clearance.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="service-card reveal-up" style="transition-delay: 300ms">
           <div class="service-icon-wrap"><div class="service-icon"><i class="fas fa-warehouse"></i></div></div>
@@ -628,7 +636,7 @@
             <li><i class="fas fa-check"></i> Inventory management</li>
             <li><i class="fas fa-check"></i> Last-mile delivery</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/warehousing.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="service-card reveal-up" style="transition-delay: 400ms">
           <div class="service-icon-wrap"><div class="service-icon"><i class="fas fa-truck-moving"></i></div></div>
@@ -639,7 +647,7 @@
             <li><i class="fas fa-check"></i> Temperature-controlled</li>
             <li><i class="fas fa-check"></i> GPS-tracked fleet</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/road-rail-freight.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="service-card reveal-up" style="transition-delay: 500ms">
           <div class="service-icon-wrap"><div class="service-icon"><i class="fas fa-shield-alt"></i></div></div>
@@ -650,7 +658,18 @@
             <li><i class="fas fa-check"></i> Fast claims processing</li>
             <li><i class="fas fa-check"></i> Risk assessment</li>
           </ul>
-          <a href="#contact" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          <a href="services/cargo-insurance.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="service-card reveal-up featured-service" style="transition-delay: 600ms">
+          <div class="service-icon-wrap"><div class="service-icon"><i class="fas fa-shopping-cart"></i></div></div>
+          <h3 class="service-title">E-commerce Logistics</h3>
+          <p class="service-desc">Amazon &amp; Shopify fulfilment for UK- and India-based sellers. 7 years of proven experience with successful project handovers and profitable 24/7 operations.</p>
+          <ul class="service-features">
+            <li><i class="fas fa-check"></i> Amazon FBA/FBM &amp; Shopify support</li>
+            <li><i class="fas fa-check"></i> UK &amp; India e-commerce operations</li>
+            <li><i class="fas fa-check"></i> Successful handover + 24/7 support</li>
+          </ul>
+          <a href="services/ecommerce.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
     </div>
