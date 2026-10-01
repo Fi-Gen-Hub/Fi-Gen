@@ -3,3 +3,9 @@ __pycache__/node_modules/
 dist/
 build/
 *.log
+node_modules/
+__pycache__/
+gen_pages.py
+pages_data.py
+index-seo-ready.html
+Untitled design.png
